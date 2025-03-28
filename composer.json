@@ -1,0 +1,22 @@
+{
+  "name": "deco/shipping",
+  "description": "Magento 2 Shipping",
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Deco",
+      "email": "andrecristiangoncalves@hotmail.com",
+      "role": "Creator"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Deco\\Shipping\\": ""
+    }
+  }
+}
