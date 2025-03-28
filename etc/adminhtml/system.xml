@@ -42,7 +42,14 @@
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="maximum_radius" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="minimum_price" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preço Mínimo do Frete</label>
+                    <validate>validate-number</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="maximum_radius" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Raio de Entrega</label>
                     <comment>Distância máxima a entregar.</comment>
                     <validate>validate-number</validate>

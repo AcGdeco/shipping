@@ -89,6 +89,10 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
 
         $price = $this->getConfigData('kilometer_price') * $distance;
 
+        if($this->getConfigData('minimum_price') != null && $price < $this->getConfigData('minimum_price')){
+            $price = $this->getConfigData('minimum_price');
+        }
+
         curl_close($ch);
 
         return $price;
