@@ -14,14 +14,14 @@ define([
                 var postcode = $(".product-info-main #deco-shipping-cep").val();
                 postcode = self.apenasNumeros(postcode);
 
-                if(!self.apenasNumerosTest(postcode)){
-                    self.mensagemErro(1);
+                if(!self.apenasNumerosTest(postcode) || postcode.length != 8){
+                    self.mensagemErro("CEP inválido. Insira apenas números e de 8 unidades.");
                     self.esconderLoading();
                     return;
                 }
 
                 if ($("body.page-product-configurable").length > 0 && $('input[name="selected_configurable_option"]').val() == "") {
-                    self.mensagemErro(4);
+                    self.mensagemErro("Faça a seleção das configurações do produto.");
                     self.esconderLoading();
                     return;
                 }
@@ -47,10 +47,11 @@ define([
             });
         },
         mensagemErro: function (msg) {
-            $(".deco-shipping-wrapper .error-message-"+msg).css("display", "initial");
-            $(".deco-shipping-wrapper .error-message-"+msg).show("fast");
+            $(".deco-shipping-wrapper .error-message").html(msg);
+            $(".deco-shipping-wrapper .error-message").css("display", "initial");
+            $(".deco-shipping-wrapper .error-message").show("fast");
             setTimeout(function() {
-                $(".deco-shipping-wrapper .error-message-"+msg).hide("slow");
+                $(".deco-shipping-wrapper .error-message").hide("slow");
             }, 3000);
         },
         formatarParaRealManual: function (numero) {
@@ -87,7 +88,7 @@ define([
                 }.bind(this)
             ).fail(
                 function (response) {
-                    this.mensagemErro(2);
+                    this.mensagemErro("CEP inválido.");
                     this.esconderLoading();
                     return;
                     errorProcessor.process(response);
