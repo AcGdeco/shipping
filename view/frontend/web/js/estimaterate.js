@@ -60,7 +60,7 @@ define([
                     var price;
                     var i;
                     html = "<table>";
-                    html += "<tr><th>Descrição</th><th>Método/Tempo</th><th>Preço</th></tr>";
+                    html += "<tr><th>Descrição</th><th>Método - Tempo</th><th>Preço</th></tr>";
 
                     for(i=0;i<result.length;i++) {
                         price = this.formatarParaRealManual(result[i]["amount"]);

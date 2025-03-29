@@ -3,10 +3,11 @@
     <default>
         <carriers>
             <pricedistanceshipping>
-                <active>1</active>
+                <active>0</active>
                 <model>Deco\Shipping\Model\Carrier\PriceDistanceShipping</model>
                 <title>Frete da Loja</title>
                 <name>Transporte</name>
+                <active_product_page_quote>1</active_product_page_quote>
             </pricedistanceshipping>
         </carriers>
     </default>

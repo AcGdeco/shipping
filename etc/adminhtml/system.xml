@@ -4,55 +4,66 @@
         <section id="carriers" translate="label" type="text" sortOrder="1000">
             <group id="pricedistanceshipping" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Frete Preço por Distância</label>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Ativar</label>
+                <field id="active_product_page_quote" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cotação do Produto</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Se habilitado, a cotação de frete do produto será possível na página do produto.</comment>
+                </field>
+                <field id="active" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ativar Frete por Distância</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="api" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="api" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Chave API</label>
                     <comment>Gere a chave da API em https://console.cloud.google.com/google/maps-apis</comment>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Nome do Transporte</label>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="origin_cep" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="origin_cep" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>CEP de Origem</label>
                     <validate>validate-number</validate>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="unit" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" >
+                <field id="unit" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" >
                     <label>Unidade</label>
                     <source_model>Deco\Shipping\Model\Carrier\SelectUnit</source_model>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="kilometer_price" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="kilometer_price" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Preço por Unidade de Distância</label>
                     <validate>validate-number</validate>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="minimum_price" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="minimum_price" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Preço Mínimo do Frete</label>
                     <validate>validate-number</validate>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="maximum_radius" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="maximum_radius" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Raio de Entrega</label>
                     <comment>Distância máxima a entregar.</comment>
                     <validate>validate-number</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="name" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Método - Dias para Entregar</label>
                     <depends>
                         <field id="active">1</field>
                     </depends>
