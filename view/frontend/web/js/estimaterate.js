@@ -16,6 +16,7 @@ define([
 
                 if(!self.apenasNumerosTest(postcode)){
                     self.mensagemErro(1);
+                    self.esconderLoading();
                     return;
                 }
 
@@ -75,6 +76,7 @@ define([
             ).fail(
                 function (response) {
                     this.mensagemErro(2);
+                    this.esconderLoading();
                     return;
                     errorProcessor.process(response);
                 }.bind(this)

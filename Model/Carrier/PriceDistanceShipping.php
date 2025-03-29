@@ -81,7 +81,7 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
         if ($response !== false) {
             $data = json_decode($response, true);
             $distance = $data["rows"][0]["elements"][0]["distance"]["text"];
-            $distance = preg_replace('/[^0-9]/', '', $distance);
+            $distance = preg_replace('/[^0-9.]/', '', $distance);
             $this->distance = $distance;
         } else {
             $result = 'Erro na requisição cURL: ' . curl_error($ch);
