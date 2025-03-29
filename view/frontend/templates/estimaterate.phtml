@@ -1,0 +1,25 @@
+<div class="deco-shipping-wrapper" >
+    <div class="tittle-text-wrapper">
+        <div class="tittle">
+            Cotação de Entrega
+        </div>
+        <div class="text">
+            Calcule o preço e o prazo de entrega estimados para este produto.
+        </div>
+    </div>
+    <div class="elements-wrapper">
+        <span>CEP</span>
+        <input id="deco-shipping-cep" type="number"/>
+        <button id="deco-shipping-getrate">Calcular</button>
+    </div>
+    <div class="error-message-1">CEP inválido, insira apenas números.</div>
+    <div class="error-message-2">CEP inválido.</div>
+    <div id="deco-shipping-table" ></div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "estimateRate":  {}
+        }
+    }
+</script>
