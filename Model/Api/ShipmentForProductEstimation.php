@@ -55,13 +55,13 @@ class ShipmentForProductEstimation implements \Deco\Shipping\Api\ShipmentForProd
     /**
      * @inheritdoc
      */
-    public function estimateByProductAndAddress($sku, \Magento\Quote\Api\Data\AddressInterface $address, $qty = 1)
+    public function estimateByProductAndAddress($id, \Magento\Quote\Api\Data\AddressInterface $address, $qty = 1)
     {
         $output = [];
 
         $address->setCountryId('BR');
 
-        $p = $this->product->get($sku);
+        $p = $this->product->getById($id);
 
         $this->item->setProduct($p);
         $this->item->setQty($qty);

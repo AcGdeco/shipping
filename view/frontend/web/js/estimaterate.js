@@ -20,10 +20,22 @@ define([
                     return;
                 }
 
-                var sku = $(".product-info-main .product.attribute.sku .value").text();
+                if ($("body.page-product-configurable").length > 0 && $('input[name="selected_configurable_option"]').val() == "") {
+                    self.mensagemErro(4);
+                    self.esconderLoading();
+                    return;
+                }
+
+                var id;
+                if($('input[name="selected_configurable_option"]').val() != ""){
+                    id = $('input[name="selected_configurable_option"]').val();
+                } else {
+                    id = $('input[name="product"]').val();
+                }
+
                 var qty = $(".product-info-main #qty").val();
                 qty = qty.replace(/\D/g, '');
-                var serviceUrl = 'rest/V1/shipping/estimate/'+sku,
+                var serviceUrl = 'rest/V1/shipping/estimate/'+id,
                 payload = JSON.stringify({
                         address: {
                             'postcode': postcode

@@ -13,10 +13,10 @@ interface ShipmentForProductEstimationInterface
 {
     /**
      * Estimate shipping by address and product, and return list of available shipping methods
-     * @param string $sku
+     * @param string $id
      * @param string $qty
      * @param AddressInterface $address
      * @return \Magento\Quote\Api\Data\ShippingMethodInterface[] An array of shipping methods
      */
-    public function estimateByProductAndAddress($sku, AddressInterface $address, $qty = 1);
+    public function estimateByProductAndAddress($id, AddressInterface $address, $qty = 1);
 }
