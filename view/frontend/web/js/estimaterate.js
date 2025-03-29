@@ -10,6 +10,7 @@ define([
         _create: function () {
             var self = this;
             $('#deco-shipping-getrate').on('click', function (e) {
+                self.mostrarLoading();
                 var postcode = $(".product-info-main #deco-shipping-cep").val();
                 postcode = self.apenasNumeros(postcode);
 
@@ -69,6 +70,7 @@ define([
 
                     html += "</table>";
                     $(".product-info-main #deco-shipping-table").html(html);
+                    this.esconderLoading();
                 }.bind(this)
             ).fail(
                 function (response) {
@@ -78,6 +80,12 @@ define([
                 }.bind(this)
             );
         },
+        mostrarLoading: function() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        },
+        esconderLoading: function() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
     });
     return $.mage.estimateRate;
 });
