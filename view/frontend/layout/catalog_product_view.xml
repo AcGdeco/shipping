@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="checkout" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="product.info.main">
-            <block class="\Magento\Framework\View\Element\Template" name="estimaterate.js" template="Deco_Shipping::estimaterate.phtml" cacheable="false" after="-" ifconfig="carriers/pricedistanceshipping/active_product_page_quote"/>
+            <block class="Magento\Framework\View\Element\Template" name="estimaterate.js" template="Deco_Shipping::estimaterate.phtml" cacheable="false" after="-" ifconfig="carriers/pricedistanceshipping/active_product_page_quote"/>
         </referenceBlock>
     </body>
 </page>
