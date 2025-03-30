@@ -72,6 +72,47 @@
                         <field id="active">1</field>
                     </depends>
                 </field>
+                <field id="maximum_volume" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Volume Máximo</label>
+                    <validate>required-entry validate-number</validate>
+                    <comment>Defina o volume máximo a ser enviado por remessa em m³.</comment>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="maximum_weight" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Peso Máximo</label>
+                    <validate>required-entry validate-number</validate>
+                    <comment>Defina o peso máximo a ser enviado por remessa em kg.</comment>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="weight_attribute" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Atributo Peso</label>
+                    <validate>required-entry</validate>
+                    <source_model>Deco\Shipping\Model\Product\Attributes</source_model>
+                    <comment>Este atributo será utilizado para obter as cotações da API.</comment>
+                </field>
+                <field id="height_attribute" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Atributo Altura</label>
+                    <validate>required-entry</validate>
+                    <source_model>Deco\Shipping\Model\Product\Attributes</source_model>
+                    <comment>Este atributo será utilizado para obter as cotações da API.</comment>
+                </field>
+                <field id="length_attribute" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Atributo Comprimento</label>
+                    <validate>required-entry</validate>
+                    <source_model>Deco\Shipping\Model\Product\Attributes</source_model>
+                    <comment>Este atributo será utilizado para obter as cotações da API.</comment>
+                </field>
+                <field id="width_attribute" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Atributo Largura</label>
+                    <validate>required-entry</validate>
+                    <source_model>Deco\Shipping\Model\Product\Attributes</source_model>
+                    <comment>Este atributo será utilizado para obter as cotações da API.</comment>
+                </field>
             </group>
         </section>
     </system>

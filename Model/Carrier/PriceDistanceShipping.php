@@ -2,6 +2,7 @@
 namespace Deco\Shipping\Model\Carrier;
 
 use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\ResultFactory;
@@ -26,16 +27,23 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
      */
     protected $distance;
 
+    /**
+     * @var ProductRepositoryInterface
+     */
+    protected $productRepository;
+
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
         \Psr\Log\LoggerInterface $logger,
         ResultFactory $rateResultFactory,
         MethodFactory $rateMethodFactory,
+        ProductRepositoryInterface $productRepository,
         array $data = []
     ) {
         $this->_rateResultFactory = $rateResultFactory;
         $this->_rateMethodFactory = $rateMethodFactory;
+        $this->productRepository = $productRepository;
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
 
@@ -47,6 +55,41 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
 
         $result = $this->_rateResultFactory->create();
         $method = $this->_rateMethodFactory->create();
+        $products = $request->getData("all_items");
+        $maximum_volume = $this->getConfigData('maximum_volume');
+        $maximum_weight = $this->getConfigData('maximum_weight');
+        $weight_attribute = $this->getConfigData('weight_attribute');
+        $height_attribute = $this->getConfigData('height_attribute');
+        $length_attribute = $this->getConfigData('length_attribute');
+        $width_attribute = $this->getConfigData('width_attribute');
+
+        $totalVolume = 0;
+        $totalWeight = 0;
+        foreach($products as $product) {
+            if($product->getData("product_type") != "configurable"){
+                $qtd = $product->getData("qty");
+                $product = $this->productRepository->getById($product->getData('product_id'));
+                $volume_length = $product->getData($length_attribute);
+                $volume_height = $product->getData($height_attribute);
+                $volume_width = $product->getData($width_attribute);
+                $weight = $product->getData($weight_attribute);
+
+                $totalVolume += $qtd * ($volume_length * $volume_height * $volume_width);
+                $totalWeight += $weight;
+            }
+        }
+
+        $totalVolume = $totalVolume / 1000000;
+        $shippingQtyVolume = $totalVolume / $maximum_volume;
+        $shippingQtyWeight = $totalWeight / $maximum_weight;
+
+        if($shippingQtyWeight > $shippingQtyVolume) {
+            $shippingQty = $shippingQtyWeight;
+        } else {
+            $shippingQty = $shippingQtyVolume;
+        }
+
+        $shippingQty = ceil($shippingQty);
 
         $method->setCarrier($this->_code);
         $method->setCarrierTitle($this->getConfigData('title'));
@@ -54,6 +97,8 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
         $method->setMethodTitle($this->getConfigData('name'));
 
         $shippingPrice = $this->calculateShippingPrice($request);
+
+        $shippingPrice *= $shippingQty;
 
         if($this->getConfigData('maximum_radius') != null && $this->distance > $this->getConfigData('maximum_radius')) {
             return false;
