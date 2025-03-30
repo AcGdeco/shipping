@@ -10,25 +10,27 @@
                     <comment>Se habilitado, a cotação de frete do produto será possível na página do produto.</comment>
                 </field>
                 <field id="active" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Ativar Frete por Distância</label>
+                    <label>Ativar Frete Preço por Distância</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="api" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Chave API</label>
-                    <comment>Gere a chave da API em https://console.cloud.google.com/google/maps-apis</comment>
+                    <validate>required-entry</validate>
+                    <comment>API Distance Matrix. Gere a chave da API em https://console.cloud.google.com/google/maps-apis</comment>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
                 <field id="title" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Nome do Transporte</label>
+                    <validate>required-entry</validate>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
                 <field id="origin_cep" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>CEP de Origem</label>
-                    <validate>validate-number</validate>
+                    <validate>validate-number required-entry</validate>
                     <depends>
                         <field id="active">1</field>
                     </depends>
@@ -42,13 +44,14 @@
                 </field>
                 <field id="kilometer_price" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Preço por Unidade de Distância</label>
-                    <validate>validate-number</validate>
+                    <validate>validate-number required-entry</validate>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
                 <field id="minimum_price" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Preço Mínimo do Frete</label>
+                    <comment>Deixe vazio para não ter preço mínimo.</comment>
                     <validate>validate-number</validate>
                     <depends>
                         <field id="active">1</field>
@@ -56,7 +59,7 @@
                 </field>
                 <field id="maximum_radius" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Raio de Entrega</label>
-                    <comment>Distância máxima a entregar.</comment>
+                    <comment>Distância máxima a entregar. Deixe vazio para não ter distância máxima.</comment>
                     <validate>validate-number</validate>
                     <depends>
                         <field id="active">1</field>
@@ -64,6 +67,7 @@
                 </field>
                 <field id="name" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Método - Dias para Entregar</label>
+                    <validate>required-entry</validate>
                     <depends>
                         <field id="active">1</field>
                     </depends>
