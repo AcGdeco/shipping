@@ -75,7 +75,7 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
                 $weight = $product->getData($weight_attribute);
 
                 $totalVolume += $qtd * ($volume_length * $volume_height * $volume_width);
-                $totalWeight += $weight;
+                $totalWeight += $qtd * $weight;
             }
         }
 
