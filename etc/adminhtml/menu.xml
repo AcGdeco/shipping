@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+    	<add id="Deco_Shipping::view" title="Deco" module="Deco_Shipping" sortOrder="50" resource="Deco_Shipping::view"/>
+        <add id="Deco_Shipping::menu" title="Manage ZIP Code Ranges" module="Deco_Shipping" sortOrder="20" parent="Deco_Shipping::view" action="shipping/index/index" resource="Deco_Shipping::menu"/>
+    </menu>
+</config>

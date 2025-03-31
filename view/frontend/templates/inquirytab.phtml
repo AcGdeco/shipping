@@ -1,0 +1,43 @@
+
+            <!-- Modal content -->
+              <div class="modal-content" >
+                <form class="form"
+                        name="inquiryFrom"
+                        action="<?php echo $this->getUrl('productinquiry/productinquiry/save'); ?>"
+                        id="inq-form"
+                        method="post"
+                        enctype='multipart/form-data'
+                        autocomplete="off"
+                        >
+                    <fieldset class="fieldset">
+                        <legend class="legend inuiry-legend">
+                            <span>
+                                Form
+                            </span>
+                        </legend>
+                        <input type="text"
+                               placeholder="Name"
+                               name="name" >
+                      </fieldset>
+                      <div class="actions-toolbar">
+                          <div class="primary">
+                              <button type="submit"
+                                      id="inq-submit"
+                                      class="action submit primary "
+                                      title="<?= $block->escapeHtml('Submit') ?>" >
+                                      <span>
+                                        <?= $block->escapeHtml('Submit') ?>
+                                      </span>
+                              </button>
+                          </div>
+                      </div>
+                </form>
+                <script type="text/x-magento-init">
+                    {
+                        "#inq-form": {
+                            "validation": {}
+                        }
+                    }
+                </script>
+              </div>
+            </div>
