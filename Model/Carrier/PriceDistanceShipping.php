@@ -96,6 +96,8 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
         $method->setMethod($this->_code);
         $method->setMethodTitle($this->getConfigData('name'));
 
+
+
         $shippingPrice = $this->calculateShippingPrice($request);
 
         $shippingPrice *= $shippingQty;
@@ -114,31 +116,36 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
     protected function calculateShippingPrice(RateRequest $request)
     {
 
-        $url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins='.$this->getConfigData('origin_cep').'&destinations='.$request->getData('dest_postcode').'&units='.$this->getConfigData('unit').'&key='.$this->getConfigData('api');
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-        $response = curl_exec($ch);
-
-        if ($response !== false) {
-            $data = json_decode($response, true);
-            $distance = $data["rows"][0]["elements"][0]["distance"]["text"];
-            $distance = preg_replace('/[^0-9.]/', '', $distance);
-            $this->distance = $distance;
+        $dest_postcode = preg_replace('/[^0-9]/', '', $request->getData('dest_postcode'));
+        if($dest_postcode >= $this->getConfigData('free_start_cep') && $dest_postcode <= $this->getConfigData('free_end_cep')) {
+            $price = 0;
         } else {
-            $result = 'Erro na requisição cURL: ' . curl_error($ch);
+            $url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins='.$this->getConfigData('origin_cep').'&destinations='.$dest_postcode.'&units='.$this->getConfigData('unit').'&key='.$this->getConfigData('api');
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+            $response = curl_exec($ch);
+
+            if ($response !== false) {
+                $data = json_decode($response, true);
+                $distance = $data["rows"][0]["elements"][0]["distance"]["text"];
+                $distance = preg_replace('/[^0-9.]/', '', $distance);
+                $this->distance = $distance;
+            } else {
+                $result = 'Erro na requisição cURL: ' . curl_error($ch);
+            }
+
+            $price = $this->getConfigData('kilometer_price') * $distance;
+
+            if($this->getConfigData('minimum_price') != null && $price < $this->getConfigData('minimum_price')){
+                $price = $this->getConfigData('minimum_price');
+            }
+
+            curl_close($ch);
         }
-
-        $price = $this->getConfigData('kilometer_price') * $distance;
-
-        if($this->getConfigData('minimum_price') != null && $price < $this->getConfigData('minimum_price')){
-            $price = $this->getConfigData('minimum_price');
-        }
-
-        curl_close($ch);
 
         return $price;
     }
