@@ -13,7 +13,7 @@
                     <label>Ativar Frete Preço por Distância</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="api" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="api" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Chave API</label>
                     <validate>required-entry</validate>
                     <comment>API Distance Matrix. Gere a chave da API em https://console.cloud.google.com/google/maps-apis</comment>
