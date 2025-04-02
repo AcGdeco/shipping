@@ -125,7 +125,7 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
     {
 
         $cepCollection = $this->dataProvider->getData();
-        $dest_postcode = preg_replace('/[^0-9]/', '', $request->getData('dest_postcode'));
+        $dest_postcode = $request->getData('dest_postcode') ? preg_replace('/[^0-9]/', '', $request->getData('dest_postcode')): "";
 
         foreach($cepCollection as $cepRange) {
             if($cepRange["status"] == 1){
