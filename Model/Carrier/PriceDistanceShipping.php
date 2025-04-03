@@ -61,6 +61,11 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
             return false;
         }
 
+        $dest_postcode = $request->getData('dest_postcode') ? preg_replace('/[^0-9]/', '', $request->getData('dest_postcode')): "";
+        if($dest_postcode == null || $dest_postcode == ""){
+            return false;
+        }
+
         $result = $this->_rateResultFactory->create();
         $method = $this->_rateMethodFactory->create();
         $products = $request->getData("all_items");
@@ -110,6 +115,8 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
 
         $shippingPrice *= $shippingQty;
 
+        $shippingPrice = $this->getPriceFee($shippingPrice, $this->getConfigData('handling_fee'), $this->getConfigData('handling_type'));
+
         if($this->getConfigData('maximum_radius') != null && $this->distance > $this->getConfigData('maximum_radius')) {
             return false;
         }
@@ -127,20 +134,22 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
         $cepCollection = $this->dataProvider->getData();
         $dest_postcode = $request->getData('dest_postcode') ? preg_replace('/[^0-9]/', '', $request->getData('dest_postcode')): "";
 
-        foreach($cepCollection as $cepRange) {
-            if($cepRange["status"] == 1){
-                $cepInicial = preg_replace('/[^0-9]/', '',$cepRange["cep_inicial"]);
-                $cepFinal = preg_replace('/[^0-9]/', '',$cepRange["cep_final"]);
+        if($cepCollection != null && $cepCollection != ""){
+            foreach($cepCollection as $cepRange) {
+                if($cepRange["status"] == 1){
+                    $cepInicial = preg_replace('/[^0-9]/', '',$cepRange["cep_inicial"]);
+                    $cepFinal = preg_replace('/[^0-9]/', '',$cepRange["cep_final"]);
 
-                if($cepInicial > $cepFinal) {
-                    $cepTem = $cepInicial;
-                    $cepInicial = $cepFinal;
-                    $cepFinal = $cepTem;
-                }
+                    if($cepInicial > $cepFinal) {
+                        $cepTem = $cepInicial;
+                        $cepInicial = $cepFinal;
+                        $cepFinal = $cepTem;
+                    }
 
-                if($dest_postcode >= $cepInicial && $dest_postcode <= $cepFinal){
-                    $price = $cepRange["price"];
-                    return $price;
+                    if($dest_postcode >= $cepInicial && $dest_postcode <= $cepFinal){
+                        $price = $this->getPriceFee($cepRange["price"],$this->getConfigData('handling_fee'),$this->getConfigData('handling_type'));
+                        return $price;
+                    }
                 }
             }
         }
@@ -153,9 +162,9 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
         $response = curl_exec($ch);
+        $data = json_decode($response, true);
 
-        if ($response !== false) {
-            $data = json_decode($response, true);
+        if ($response !== false && $data["status"] != "INVALID REQUEST") {
             $distance = $data["rows"][0]["elements"][0]["distance"]["text"];
             $distance = preg_replace('/[^0-9.]/', '', $distance);
             $this->distance = $distance;
@@ -177,5 +186,20 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
     public function getAllowedMethods()
     {
         return [$this->_code => $this->getConfigData('name')];
+    }
+
+    public function getPriceFee($total, $handling_fee, $handling_type)
+    {
+        if($handling_fee != null && $handling_fee != ""){
+            if($handling_type != "P"){
+                $price = $total + $handling_fee;
+            }else{
+                $price = $total + $total * $handling_fee / 100;
+            }
+        } else {
+            $price = $total;
+        }
+
+        return $price;
     }
 }

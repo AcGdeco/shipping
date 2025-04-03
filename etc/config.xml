@@ -6,6 +6,7 @@
                 <active>0</active>
                 <model>Deco\Shipping\Model\Carrier\PriceDistanceShipping</model>
                 <active_product_page_quote>1</active_product_page_quote>
+                <handling_type>F</handling_type>
             </pricedistanceshipping>
         </carriers>
     </default>
