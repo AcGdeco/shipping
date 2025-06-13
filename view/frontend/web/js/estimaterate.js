@@ -33,7 +33,7 @@ define([
                     id = $('input[name="product"]').val();
                 }
 
-                var qty = $(".product-info-main #qty").val();
+                var qty = $("#qty").val();
                 qty = qty.replace(/\D/g, '');
                 var serviceUrl = 'rest/V1/shipping/estimate/'+id,
                 payload = JSON.stringify({
