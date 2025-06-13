@@ -79,7 +79,7 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
         $totalVolume = 0;
         $totalWeight = 0;
         foreach($products as $product) {
-            if($product->getData("product_type") != "configurable"){
+            if($product->getData("product_type") != "configurable" && $product->getData("product_type") != "bundle"){
                 $qtd = $product->getData("qty");
                 $product = $this->productRepository->getById($product->getData('product_id'));
                 $volume_length = $product->getData($length_attribute);
