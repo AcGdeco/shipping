@@ -92,7 +92,22 @@ class ShipmentForProductEstimation implements \Deco\Shipping\Api\ShipmentForProd
 
         $this->totalsCollector->collectAddressTotals($this->quote, $shippingAddress);
         $shippingRates = $shippingAddress->getGroupedAllShippingRates();
+
+        foreach ($shippingRates as $carrierRatesIndex => $carrierRates) {
+            $newRate = [];
+
+            foreach ($carrierRates as $rate) {
+                if(empty($methodExist[$rate->getData("code")])){
+                    $methodExist[$rate->getData("code")] = $rate->getData("code"); 
+                    $newRate[] = $rate;
+                }
+            }
+
+            $newCarrierRates[$carrierRatesIndex] = $newRate;
+        }
         
+        $shippingRates = $newCarrierRates;
+
         foreach ($shippingRates as $carrierRates) {
             foreach ($carrierRates as $rate) {
                 $output[] = $this->converter->modelToDataObject($rate, $this->quote->getQuoteCurrencyCode());
