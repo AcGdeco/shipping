@@ -113,6 +113,10 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
 
         $shippingPrice = $this->calculateShippingPrice($request);
 
+        if($shippingPrice == false) {
+            return false;
+        }
+
         $shippingPrice *= $shippingQty;
 
         $shippingPrice = $this->getPriceFee($shippingPrice, $this->getConfigData('handling_fee'), $this->getConfigData('handling_type'));
@@ -163,8 +167,9 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
 
         $response = curl_exec($ch);
         $data = json_decode($response, true);
+        $rows = $data["rows"][0]["elements"][0]["status"];
 
-        if ($response !== false && $data["status"] != "INVALID REQUEST") {
+        if ($response !== false && $data["status"] != "INVALID REQUEST" && !empty($data["rows"][0]["elements"][0]["status"]) && $data["rows"][0]["elements"][0]["status"] != "NOT_FOUND") {
             $distance = $data["rows"][0]["elements"][0]["distance"]["text"];
             $distance = preg_replace('/[^0-9.]/', '', $distance);
             $this->distance = $distance;
@@ -172,13 +177,19 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
             $result = 'Erro na requisição cURL: ' . curl_error($ch);
         }
 
-        $price = $this->getConfigData('kilometer_price') * $distance;
+        if(!empty($distance)){
 
-        if($this->getConfigData('minimum_price') != null && $price < $this->getConfigData('minimum_price')){
-            $price = $this->getConfigData('minimum_price');
+            $price = $this->getConfigData('kilometer_price') * $distance;
+
+            if($this->getConfigData('minimum_price') != null && $price < $this->getConfigData('minimum_price')){
+                $price = $this->getConfigData('minimum_price');
+            }
+
         }
 
         curl_close($ch);
+
+        $price = false;
 
         return $price;
     }
