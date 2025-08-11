@@ -185,11 +185,11 @@ class PriceDistanceShipping extends AbstractCarrier implements CarrierInterface
                 $price = $this->getConfigData('minimum_price');
             }
 
+        } else {
+            $price = false;
         }
 
         curl_close($ch);
-
-        $price = false;
 
         return $price;
     }
