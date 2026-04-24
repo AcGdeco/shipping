@@ -19,7 +19,9 @@
 <script type="text/x-magento-init">
     {
         "*": {
-            "estimateRate":  {}
+            "estimateRate": {
+                "priceFormat": <?= /* @noEscape */ $block->getPriceFormatJson() ?>
+            }
         }
     }
 </script>

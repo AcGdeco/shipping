@@ -48,13 +48,19 @@ class ShipmentForProductEstimation implements \Deco\Shipping\Api\ShipmentForProd
      * @param \Magento\Catalog\Model\Product\Type $productType
      */
 
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
     public function __construct(
         \Magento\Quote\Model\Cart\ShippingMethodConverter $converter,
         \Magento\Quote\Model\Quote\TotalsCollector $totalsCollector,
         \Magento\Quote\Model\Quote $quote,
         \Magento\Catalog\Api\ProductRepositoryInterface $product,
         \Magento\Quote\Model\Quote\Item $item,
-        \Magento\Catalog\Model\Product\Type $productType
+        \Magento\Catalog\Model\Product\Type $productType,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->converter = $converter;
         $this->totalsCollector = $totalsCollector;
@@ -62,6 +68,7 @@ class ShipmentForProductEstimation implements \Deco\Shipping\Api\ShipmentForProd
         $this->product = $product;
         $this->item = $item;
         $this->productType = $productType;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -85,6 +92,10 @@ class ShipmentForProductEstimation implements \Deco\Shipping\Api\ShipmentForProd
             $this->item->setQty($qty);
             $this->quote->addItem($this->item);
         }
+
+        $store = $this->storeManager->getStore();
+        $this->quote->setQuoteCurrencyCode($store->getCurrentCurrencyCode());
+        $this->quote->setStoreCurrencyCode($store->getCurrentCurrencyCode());
 
         $shippingAddress = $this->quote->getShippingAddress();
         $shippingAddress->addData($this->extractAddressData($address));

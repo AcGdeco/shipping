@@ -1,11 +1,13 @@
 define([
     "jquery",
     'mage/storage',
-    'Magento_Checkout/js/model/error-processor'
-], function ($,storage, errorProcessor) {
+    'Magento_Checkout/js/model/error-processor',
+    'Magento_Catalog/js/price-utils'
+], function ($, storage, errorProcessor, priceUtils) {
     'use strict';
     $.widget('mage.estimateRate', {
         options: {
+            priceFormat: {}
         },
         _create: function () {
             var self = this;
@@ -78,7 +80,7 @@ define([
                     html += "<tr><th>Descrição</th><th>Método - Tempo</th><th>Preço</th></tr>";
 
                     for(i=0;i<result.length;i++) {
-                        price = this.formatarParaRealManual(result[i]["amount"]);
+                        price = priceUtils.formatPriceLocale(result[i]["amount"], this.options.priceFormat);
                         html += "<tr><td>"+result[i].carrier_title+"</td><td>"+result[i].method_title+"</td><td class='deco-shipping-price' >"+price+"</td></tr>";
                     }
 
